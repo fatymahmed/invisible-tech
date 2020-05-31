@@ -32,4 +32,43 @@ const getCityName = async (postalCode) => {
   }
 };
 
+const getWeatherAndTime = async (city) => {
+  try {
+    const response = await fetch(
+      `${weatherAPI}?q=${city}&units=metric&APPID=e35c92eefa655c7d2e50f8101fc984ca`
+    );
+    const result = await response.json();
+    const weatherDescription = result.weather[0].description;
+    const temperature = result.main.temp;
+    const UTCtimeOffsetInHours = result.timezone / 3600;
+    const currentUserDate = new Date();
+    const currentUTCTime =
+      currentUserDate.getTime() + currentUserDate.getTimezoneOffset() * 60000;
+
+    const currentDateAndTime = new Date(
+      currentUTCTime + 3600000 * UTCtimeOffsetInHours
+    );
+
+    city = city.replace(/\+/g, " ");
+
+    console.log(
+      "The weather in " +
+        city +
+        " is " +
+        weatherDescription +
+        " with a temperature of " +
+        temperature +
+        " degrees celcius"
+    );
+    console.log(
+      "The local date and time in " +
+        city +
+        " is " +
+        currentDateAndTime.toLocaleString()
+    );
+  } catch (error) {
+    alert(city + " not found");
+  }
+};
+
 main([10005, "mombasga", "turin"]);
