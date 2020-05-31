@@ -19,4 +19,17 @@ const findWeatherForLocation = async (location) => {
   }
 };
 
+const getCityName = async (postalCode) => {
+  try {
+    const response = await fetch(
+      `${zipCodeAPI}${postalCode}?key=3U7NI37W63J526BVXBS1`
+    );
+    const result = await response.json();
+    let city = result.City;
+    return city.replace(/ /g, "+");
+  } catch (err) {
+    alert(postalCode + " not found");
+  }
+};
+
 main([10005, "mombasga", "turin"]);
